@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF8EF">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Trạm 3 · Khắc họa chân dung nghề nghiệp STEM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+  <div class="khung">
+    <header class="dau">
+      <div class="hang-logo" aria-label="Đơn vị đồng hành">
+        <img src="logo/tim.png" alt="TIM" class="lg lg-tim">
+        <img src="logo/ausaid.png" alt="Australian Aid" class="lg lg-ausaid">
+        <img src="logo/quochuy.png" alt="UBND tỉnh Điện Biên" class="lg lg-qh">
+        <img src="logo/unwomen.png" alt="UN Women" class="lg lg-unw">
+        <img src="logo/forall.png" alt="For All" class="lg lg-forall">
+      </div>
+      <div class="vien-cam" aria-hidden="true"></div>
+    </header>
+
+    <main class="than">
+      <!-- 1. Màn chào -->
+      <section class="man" id="man-chao" data-man="chao">
+        <div class="sk">HỘI CHỢ STEM #GENACT</div>
+        <div class="tram">TRẠM 3</div>
+        <h1 class="tieu-de">Khắc họa <span class="nb">chân dung</span> <span class="nb">nghề nghiệp STEM</span> <span class="nb">của bạn</span></h1>
+        <p class="gioi-thieu">Chọn <span class="nb">4 mảnh ghép</span> để AI <span class="nb">vẽ nhân vật</span> <span class="nb">nghề STEM</span> <span class="nb">ở Điện Biên.</span></p>
+        <ul class="y-chinh">
+          <li><b>Không chụp ảnh mặt:</b> AI <span class="nb">chỉ đọc</span> <span class="nb">câu chữ</span> <span class="nb">của bạn.</span></li>
+          <li>Mỗi điện thoại <span class="nb">chơi được</span> <b class="nb" id="so-luot">3 lượt</b>.</li>
+        </ul>
+        <button class="nut nut-chinh" id="nut-bat-dau" type="button">Bắt đầu ghép câu lệnh</button>
+        <button class="nut nut-chu" id="nut-tu-viet" type="button">Hoặc tự viết <span class="nb">câu lệnh</span> <span class="nb">của riêng bạn</span></button>
+      </section>
+
+      <!-- 3a. Ghép 4 mảnh -->
+      <section class="man" id="man-ghep" data-man="ghep" hidden>
+        <ol class="buoc-nho" id="buoc-nho" aria-label="Tiến độ ghép"></ol>
+        <div class="sk" id="ghep-buoc">BƯỚC 1/6</div>
+        <h2 class="tieu-de nho" id="ghep-hoi">Nhân vật của bạn là ai?</h2>
+        <p class="ghi-chu" id="ghep-ghi-chu" hidden></p>
+        <div class="luoi-the" id="luoi-the" role="radiogroup"></div>
+        <div class="hang-nut">
+          <button class="nut nut-phu" id="ghep-lui" type="button">Quay lại</button>
+          <button class="nut nut-chinh" id="ghep-tiep" type="button" disabled>Tiếp</button>
+        </div>
+      </section>
+
+      <!-- 3a'. Xem & sửa câu lệnh -->
+      <section class="man" id="man-xem-lenh" data-man="xem-lenh" hidden>
+        <ol class="buoc-nho" data-buoc="4" aria-hidden="true"></ol>
+        <div class="sk">BƯỚC 5/6 · CÂU LỆNH CỦA BẠN</div>
+        <h2 class="tieu-de nho">Đọc lại, <span class="nb">sửa nếu</span> <span class="nb">muốn</span></h2>
+        <div class="manh-da-chon" id="manh-da-chon"></div>
+        <label class="o-nhap">
+          <textarea id="lenh-ghep" rows="4" maxlength="300"></textarea>
+          <span class="dem" id="dem-ghep">0/300</span>
+        </label>
+        <p class="bao-loi" id="loi-ghep" role="alert" hidden></p>
+        <div class="hang-nut">
+          <button class="nut nut-phu" id="xem-lui" type="button">Sửa thẻ</button>
+          <button class="nut nut-chinh" id="tao-ghep" type="button">Tạo ảnh</button>
+        </div>
+      </section>
+
+      <!-- 3b. Tự viết -->
+      <section class="man" id="man-tu-viet" data-man="tu-viet" hidden>
+        <div class="sk">TỰ VIẾT CÂU LỆNH</div>
+        <h2 class="tieu-de nho">Tả nhân vật <span class="nb">STEM</span> <span class="nb">của bạn</span></h2>
+        <p class="ghi-chu">Nêu <span class="nb">vai trò,</span> <span class="nb">nghề,</span> <span class="nb">trang phục,</span> <span class="nb">nơi chốn.</span> Không nêu <span class="nb">tên người thật.</span></p>
+        <label class="o-nhap">
+          <textarea id="lenh-tu-viet" rows="5" maxlength="300" placeholder="Ví dụ: Một nữ kỹ sư người Thái…"></textarea>
+          <span class="dem" id="dem-tu-viet">0/300</span>
+        </label>
+        <div class="sk nho">GỢI Ý, BẤM ĐỂ DÙNG</div>
+        <div class="goi-y" id="goi-y"></div>
+        <p class="bao-loi" id="loi-tu-viet" role="alert" hidden></p>
+        <div class="hang-nut">
+          <button class="nut nut-phu" data-ve="chao" type="button">Quay lại</button>
+          <button class="nut nut-chinh" id="tao-tu-viet" type="button">Tạo ảnh</button>
+        </div>
+      </section>
+
+      <!-- 4. Đang tạo -->
+      <section class="man" id="man-dang-tao" data-man="dang-tao" hidden>
+        <div class="sk">AI ĐANG VẼ</div>
+        <h2 class="tieu-de nho">Chờ <span class="nb">một chút</span> <span class="nb">nhé!</span></h2>
+        <div class="thanh" aria-hidden="true"><div class="thanh-chay" id="thanh-chay"></div></div>
+        <p class="phan-tram" id="phan-tram" role="status">0%</p>
+        <p class="ghi-chu" id="trang-thai-cho">Đang gửi câu lệnh…</p>
+        <blockquote class="lenh-trich" id="lenh-dang-tao"></blockquote>
+      </section>
+
+      <!-- 5. Kết quả -->
+      <section class="man" id="man-ket-qua" data-man="ket-qua" hidden>
+        <ol class="buoc-nho" data-buoc="5" aria-hidden="true"></ol>
+        <div class="sk">BƯỚC 6/6 · CHÂN DUNG CỦA BẠN</div>
+        <figure class="anh-kq"><img id="anh-kq" alt="Chân dung nghề nghiệp STEM do AI tạo"></figure>
+        <div class="sk nho">CÂU LỆNH ĐÃ DÙNG</div>
+        <blockquote class="lenh-trich" id="lenh-da-dung"></blockquote>
+        <p class="nhac-ai nhac-anh">Ảnh do AI tạo sinh, <span class="nb">có thể chưa chính xác</span> <span class="nb">(ví dụ hoạ tiết trang phục).</span></p>
+        <div class="hang-nut deu">
+          <a class="nut nut-chinh" id="nut-tai" href="#" download>Tải xuống</a>
+          <button class="nut nut-fb" id="nut-chia-se" type="button">Chia sẻ Facebook</button>
+        </div>
+        <p class="ghi-chu" id="chia-se-tb" role="status" hidden></p>
+        <button class="nut nut-dau" id="nut-dong-dau" type="button">Đưa Ban Tổ chức xem <span class="nb">để đóng dấu</span> <span class="nb">Hộ chiếu GenAct</span></button>
+        <button class="nut nut-phu" id="nut-choi-lai" type="button">Chơi lại</button>
+        <p class="ghi-chu" id="luot-con"></p>
+      </section>
+
+      <!-- Màn đóng dấu (toàn màn hình cho BTC xem) -->
+      <section class="man man-dau" id="man-dong-dau" data-man="dong-dau" hidden>
+        <div class="dau-tem">
+          <div class="sk">HỘ CHIẾU GENACT</div>
+          <div class="tram lon">TRẠM 3</div>
+          <div class="xong">ĐÃ HOÀN THÀNH</div>
+          <img id="anh-dau" alt="Ảnh đã tạo">
+          <p class="ghi-chu" id="gio-xong"></p>
+        </div>
+        <button class="nut nut-phu" id="dau-lui" type="button">Quay lại ảnh</button>
+      </section>
+
+      <!-- Lỗi chung -->
+      <section class="man" id="man-loi" data-man="loi" hidden>
+        <div class="sk">CHƯA XONG</div>
+        <h2 class="tieu-de nho" id="loi-tieu-de">Thử lại nhé</h2>
+        <p class="ghi-chu" id="loi-chi-tiet"></p>
+        <button class="nut nut-chinh" id="loi-thu-lai" type="button">Thử lại</button>
+        <button class="nut nut-phu" data-ve="chao" type="button">Về màn chào</button>
+      </section>
+    </main>
+
+    <footer class="chan">
+      <p class="nhac-ai" id="nhac-ai">Ảnh do AI tạo sinh, <span class="nb">có thể chưa chính xác</span> <span class="nb">(ví dụ hoạ tiết trang phục).</span></p>
+      <div>Hội chợ STEM #GENACT · <span class="nb">Điện Biên 25/11/2026</span></div>
+    </footer>
+  </div>
+  <script src="js/game.js"></script>
+</body>
+</html>
