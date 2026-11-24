@@ -39,13 +39,15 @@ body {
 
 .dau { position: sticky; top: 0; z-index: 5; background: var(--trang); box-shadow: 0 3px 12px rgba(160, 60, 10, .08); }
 .hang-logo {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
+  display: flex; align-items: center; justify-content: center; gap: 22px;
   padding: 8px 16px; padding-top: max(8px, env(safe-area-inset-top));
 }
 .lg { display: block; height: 26px; width: auto; }
+.lg-nhom { display: flex; flex-direction: column; align-items: center; }
 .lg-qh { height: 28px; }
-.lg-unw { height: 20px; }
-.lg-forall { height: 22px; }
+.lg-ubnd { font-family: 'Anton', Impact, sans-serif; font-size: 7.5px; line-height: 1; margin-top: 2px; color: var(--xanh-ubnd); white-space: nowrap; letter-spacing: .1px; }
+.lg-unw { height: 24px; }
+.lg-forall { height: 30px; }
 .vien-cam { height: 10px; background: url(../logo/tocam-nho.png) left center / auto 100% repeat-x; }
 
 .than { flex: 1; padding: 20px 16px 12px; }
@@ -161,6 +163,6 @@ body {
 @media (max-width: 360px) {
   .tieu-de { font-size: 34px; }
   .tieu-de.nho { font-size: 25px; }
-  .lg { height: 22px; } .lg-qh { height: 24px; } .lg-unw { height: 17px; } .lg-forall { height: 19px; }
-  .hang-logo { gap: 9px; }
+  .lg { height: 22px; } .lg-qh { height: 24px; } .lg-ubnd { font-size: 6.5px; } .lg-unw { height: 21px; } .lg-forall { height: 26px; }
+  .hang-logo { gap: 16px; }
 }
