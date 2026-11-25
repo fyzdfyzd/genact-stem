@@ -283,33 +283,44 @@
   $('dau-lui').addEventListener('click', () => hien('ket-qua'));
   $('loi-thu-lai').addEventListener('click', () => hien('chao'));
 
-  // Chia sẻ: Web Share API kèm tệp ảnh nếu máy hỗ trợ, dự phòng link sharer Facebook tới trang game
+  // Chia sẻ: ưu tiên chia sẻ TỆP ẢNH qua bảng chia sẻ của điện thoại (chọn Facebook),
+  // dự phòng: sharer Facebook tới trang chia-se/<ảnh>.html có og:image đúng ảnh, kèm #GenAct
+  const TRONG_APP = /Zalo|FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Line\//i.test(navigator.userAgent || '');
+  const LINK_GAME = 'https://fyzdfyzd.github.io/genact-stem/';
+  const CAPTION = `Chân dung nghề STEM của tôi tại Hội chợ STEM #GENACT Điện Biên #GenAct
+Chơi thử: ${LINK_GAME}`;
+  async function chepHashtag() {
+    try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(CAPTION); return true; } } catch (e) { /* bỏ qua */ }
+    try {
+      const t = document.createElement('textarea'); t.value = CAPTION; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select(); const ok = document.execCommand('copy'); t.remove(); return ok;
+    } catch (e) { return false; }
+  }
   $('nut-chia-se').addEventListener('click', async () => {
     if (!S.ketQua) return;
-    const urlGame = location.href.split('#')[0].split('?')[0];
-    const loiNhan = 'Chân dung nghề nghiệp STEM của mình ở Trạm 3, Hội chợ STEM #GENACT Điện Biên!';
     const tb = $('chia-se-tb');
-    tb.hidden = true;
+    const daChep = await chepHashtag();
+    const nhac = daChep ? 'Đã chép #GenAct và link chơi, dán vào bài đăng nhé.' : 'Nhớ gõ #GenAct vào bài đăng nhé.';
+    tb.textContent = nhac; tb.hidden = false;
     try {
-      if (navigator.share) {
-        let duLieu = { title: 'Hội chợ STEM #GENACT', text: loiNhan, url: urlGame };
-        try {
-          const blob = await (await fetch(S.ketQua.url)).blob();
-          const tep = new File([blob], `chan-dung-stem-${S.ketQua.id}.jpg`, { type: 'image/jpeg' });
-          if (navigator.canShare && navigator.canShare({ files: [tep] })) duLieu = { title: duLieu.title, text: `${loiNhan} #GENACT`, files: [tep] };
-        } catch (e) { /* chia sẻ link nếu không lấy được tệp */ }
-        await navigator.share(duLieu);
-        return;
+      if (navigator.share && navigator.canShare) {
+        const blob = await (await fetch(S.ketQua.url)).blob();
+        const tep = new File([blob], `chan-dung-stem-genact-${S.ketQua.id}.jpg`, { type: 'image/jpeg' });
+        if (navigator.canShare({ files: [tep] })) {
+          await navigator.share({ files: [tep], title: '#GenAct', text: CAPTION });
+          return;
+        }
       }
     } catch (err) {
       if (err && err.name === 'AbortError') return;
     }
-    const fb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlGame)}`;
+    const trang = new URL(`chia-se/${S.ketQua.ten}.html`, location.href.split('#')[0].split('?')[0]).href;
+    const fb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(trang)}&hashtag=%23GenAct`;
     const w = window.open(fb, '_blank');
     if (w) { try { w.opener = null; } catch (e) { /* bỏ qua */ } } else { location.href = fb; }
-    tb.textContent = 'Đang mở Facebook để chia sẻ…';
-    tb.hidden = false;
+    tb.textContent = `${nhac} Đang mở Facebook…`;
   });
+  if (TRONG_APP) { const g = $('goi-y-app'); if (g) g.hidden = false; }
 
   capNhatLuot();
   window.__tram3 = { chonAnh, docCauTuViet };
